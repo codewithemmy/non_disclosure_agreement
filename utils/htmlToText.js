@@ -1,6 +1,6 @@
 const htmlToText = require("html-to-text")
 
-const convertHtmlToText = () => {
+const convertHtmlToText = (html) => {
   return htmlToText.convert(html, {
     wordwrap: false,
     ignoreHref: true,
@@ -8,4 +8,4 @@ const convertHtmlToText = () => {
   })
 }
 
-module.export = { convertHtmlToText }
+module.exports = { convertHtmlToText }
