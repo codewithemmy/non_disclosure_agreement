@@ -34,6 +34,9 @@ userRoute
 
 userRoute.route("/").get(getUserController)
 
+
+userRoute.route("/download-nda/:uuid").get(downloadNdaController)
+
 userRoute.use(isAuthenticated)
 
 userRoute.patch("/update", updateUserProfileController)
@@ -48,6 +51,5 @@ userRoute.route("/password").patch(changePasswordController)
 userRoute.route("/generate").post(NDAGeneratorController)
 
 userRoute.route("/save-nda").post(saveNdaController)
-userRoute.route("/download-nda/:uuid").get(downloadNdaController)
 
 module.exports = userRoute
