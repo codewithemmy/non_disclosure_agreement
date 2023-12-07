@@ -108,6 +108,14 @@ const downloadNdaController = async (req, res, next) => {
     const fileName = `${req.params.uuid}_document.pdf`
     const filePath = path.join(__dirname, "../../../public/pdf/", fileName)
 
+    // Set the appropriate content type for a PDF file
+    res.setHeader("Content-Type", "application/pdf")
+    // Set the content disposition to trigger a download
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=downloaded-file.pdf"
+    )
+
     return res.download(filePath)
   } catch (error) {
     console.log("error", error)
