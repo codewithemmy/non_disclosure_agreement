@@ -5,7 +5,7 @@ const { CustomError } = require("../../utils/errors")
 
 const adminSignUpController = async (req, res, next) => {
   const [error, data] = await manageAsyncOps(
-    AdminAuthService.adminSignUpService(req.body, res.locals.jwt)
+    AdminAuthService.adminSignUpService(req, res.locals.jwt)
   )
 
   if (error) return next(error)

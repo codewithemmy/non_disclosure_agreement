@@ -11,7 +11,12 @@ const { adminMessages } = require("./messages/admin.messages")
 const { uploadImageManager } = require("../../utils/multer")
 
 class AdminAuthService {
-  static async adminSignUpService(body, locals) {
+  static async adminSignUpService(data, locals) {
+    const { body } = data
+    if (!data.files || !data.files.image)
+      return { success: false, msg: adminMessages.UPDATE_IMAGE_FAILURE }
+
+    const image = await uploadImageManager(data)
     if (locals.accountType != "superAdmin") {
       return { success: false, msg: authMessages.SUPER_ADMIN }
     }
@@ -24,7 +29,11 @@ class AdminAuthService {
     }
 
     const password = await hashPassword(body.password)
-    const signUp = await AdminRepository.create({ ...body, password })
+    const signUp = await AdminRepository.create({
+      ...body,
+      image: image.secure_url,
+      password,
+    })
 
     return { success: true, msg: authMessages.ADMIN_CREATED, data: signUp }
   }
