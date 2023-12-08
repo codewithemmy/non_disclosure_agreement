@@ -98,14 +98,14 @@ class ndaService {
     const plainTextPayload = convertHtmlToText(htmlContent)
 
     const filename = `${randomId}_document.html`
-    const filePath = path.join(__dirname, "../../../public/html/", filename)
+    const filePath = path.join(__dirname, "../../../utils/public/html/", filename)
     fs.writeFileSync(filePath, htmlContent)
 
     try {
       const pdfFilename = `${randomId}_document.pdf`
       const pdfFilePath = path.join(
         __dirname,
-        "../../../public/pdf/",
+        "../../../utils/public/pdf/",
         pdfFilename
       )
 

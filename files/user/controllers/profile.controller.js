@@ -106,7 +106,7 @@ const saveNdaController = async (req, res, next) => {
 const downloadNdaController = async (req, res, next) => {
   try {
     const fileName = `${req.params.uuid}_document.pdf`
-    const filePath = path.join(__dirname, "../../../public/pdf/", fileName)
+    const filePath = path.join(__dirname, "../../../utils/public/pdf/", fileName)
 
     // Set the appropriate content type for a PDF file
     res.setHeader("Content-Type", "application/pdf")
