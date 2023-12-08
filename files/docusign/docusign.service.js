@@ -25,7 +25,7 @@ class DocusignService {
     // Generate an initial file path
     let filePath = path.resolve(
       __dirname,
-      `../../public/pdf/${params}_document.pdf`
+      `../../utils/public/pdf/${params}_document.pdf`
     )
 
     await checkToken(req)
@@ -68,7 +68,7 @@ class DocusignService {
     const signedDocumentBase64 = Buffer.from(documentsUri).toString("base64")
 
     const pdfFilename = `new_document.pdf`
-    const pdfFilePath = path.join(__dirname, "../../public/pdf/", pdfFilename)
+    const pdfFilePath = path.join(__dirname, "../../utils/public/pdf/", pdfFilename)
 
     try {
       await writeFile(pdfFilePath, signedDocumentBase64, "base64")
