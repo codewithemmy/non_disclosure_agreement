@@ -15,7 +15,7 @@ module.exports.handleApplicationErrors = (err, req, res, _next) => {
     return res.status(statusCode).json(payload)
   }
 
-  res.status(400).json({ message: generalMessages.UNEXPECTED_FAILURE })
+  res.status(400).json({ message: generalMessages.UNEXPECTED_FAILURE, error: err.message })
 }
 
 module.exports.notFound = (req, res) => {
