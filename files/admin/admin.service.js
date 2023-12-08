@@ -109,8 +109,6 @@ class AdminAuthService {
 
   static async updateAdminService(data) {
     const { body, params } = data
-    if (!data.files || !data.files.image)
-      return { success: false, msg: adminMessages.UPDATE_IMAGE_FAILURE }
 
     const image = await uploadImageManager(data)
 
