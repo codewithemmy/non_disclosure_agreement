@@ -66,7 +66,7 @@ class UserService {
       email: email,
     })
 
-    if (userProfile.isVerified !== true)
+    if (!userProfile.isVerified)
       return { success: false, msg: UserFailure.VERIFIED }
 
     if (!userProfile) return { success: false, msg: UserFailure.USER_EXIST }

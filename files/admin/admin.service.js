@@ -39,8 +39,9 @@ class AdminAuthService {
   }
 
   static async adminLoginService(body) {
+    const { email, password } = body
     const admin = await AdminRepository.fetchAdmin({
-      email: body.email,
+      email: email,
     })
 
     if (!admin) {
@@ -50,10 +51,10 @@ class AdminAuthService {
       }
     }
 
-    const passwordCheck = await verifyPassword(body.password, admin.password)
+    const passwordCheck = await verifyPassword(password, admin.password)
 
     if (!passwordCheck) {
-      return { success: false, msg: authMessages.LOGIN_ERROR }
+      return { success: false, msg: authMessages.INCORRECT_PASSWORD }
     }
 
     admin.password = undefined
