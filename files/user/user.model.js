@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    generatedDoc: {
+      type: Number,
+      default: 0,
+    },
     email: {
       type: String,
       unique: true,

@@ -37,6 +37,10 @@ class ndaService {
       }
     }
 
+    await UserRepository.incrementUserById(locals._id, {
+      generatedDoc: 1,
+    })
+
     const {
       company,
       initiator,
@@ -80,6 +84,13 @@ class ndaService {
   }
 
   static async saveNdaService(req, locals) {
+    const { htmlContent, title } = req.body
+
+    const validateContract = await ContractRepository.fetchOne({ title })
+
+    if (validateContract)
+      return { success: false, msg: `Contract title already used` }
+
     let randomId
 
     let contract
@@ -89,8 +100,6 @@ class ndaService {
       contract = await ContractRepository.fetchOne({ uniqueId: randomId })
     } while (contract)
 
-    const { htmlContent } = req.body
-
     if (!htmlContent) {
       return { success: false, msg: UserFailure.HTML }
     }
@@ -98,7 +107,11 @@ class ndaService {
     const plainTextPayload = convertHtmlToText(htmlContent)
 
     const filename = `${randomId}_document.html`
-    const filePath = path.join(__dirname, "../../../utils/public/html/", filename)
+    const filePath = path.join(
+      __dirname,
+      "../../../utils/public/html/",
+      filename
+    )
     fs.writeFileSync(filePath, htmlContent)
 
     try {
@@ -128,6 +141,7 @@ class ndaService {
 
       // You can now proceed to save the contract and respond to the client as needed
       const contract = await ContractService.createContract({
+        title,
         contractName: pdfFilename,
         randomId,
         clientId: new mongoose.Types.ObjectId(locals),

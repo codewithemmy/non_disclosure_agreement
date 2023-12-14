@@ -110,27 +110,30 @@ class AdminAuthService {
 
   static async updateAdminService(data) {
     const { body, params } = data
-
-    const image = await uploadImageManager(data)
+    let image
+    if (data.files) {
+      image = await uploadImageManager(data)
+    }
 
     delete body.email
 
     const admin = await AdminRepository.updateAdminById(params.id, {
-      image: image.secure_url,
+      image: image?.secure_url,
       ...body,
     })
 
-    if (!admin) {
+    if (!admin)
       return {
         success: false,
         msg: adminMessages.UPDATE_PROFILE_FAILURE,
       }
-    } else {
-      return {
-        success: true,
-        msg: adminMessages.UPDATE_PROFILE_SUCCESS,
-        admin,
-      }
+
+    admin.password = ""
+
+    return {
+      success: true,
+      msg: adminMessages.UPDATE_PROFILE_SUCCESS,
+      admin,
     }
   }
 

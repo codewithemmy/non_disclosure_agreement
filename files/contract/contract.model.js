@@ -2,6 +2,9 @@ const mongoose = require("mongoose")
 
 const contractSchema = new mongoose.Schema(
   {
+    title: {
+      type: String,
+    },
     contractName: {
       type: String,
     },
