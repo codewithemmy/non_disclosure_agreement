@@ -121,9 +121,11 @@ class AdminAuthService {
     if (action === "Deactivate") {
       status = "Inactive"
     }
-    if (action === "Active") {
+    if (action === "Activate") {
       status = "Active"
     }
+
+    console.log("status", status)
 
     const admin = await AdminRepository.updateAdminById(params.id, {
       image: image?.secure_url,
