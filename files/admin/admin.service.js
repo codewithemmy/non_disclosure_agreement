@@ -110,15 +110,24 @@ class AdminAuthService {
 
   static async updateAdminService(data) {
     const { body, params } = data
+    const { action } = body
     let image
     if (data.files) {
       image = await uploadImageManager(data)
     }
 
     delete body.email
+    let status
+    if (action === "Deactivate") {
+      status = "Inactive"
+    }
+    if (action === "Active") {
+      status = "Active"
+    }
 
     const admin = await AdminRepository.updateAdminById(params.id, {
       image: image?.secure_url,
+      status,
       ...body,
     })
 
