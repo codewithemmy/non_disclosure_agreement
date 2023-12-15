@@ -19,7 +19,6 @@ class AdminRepository {
     const { limit, skip, sort, ...restOfPayload } = userPayload
     const user = await Admin.find({
       ...restOfPayload,
-      accountType: "normalAdmin",
     })
       .sort(sort)
       .skip(skip)
