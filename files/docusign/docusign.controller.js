@@ -46,38 +46,38 @@ const getDocusignController = async (req, res, next) => {
 // }
 
 const docusignWebhookController = async (req, res, next) => {
-  console.log("request", req)
+  console.log("request", req);
   try {
     // Verify payload integrity
     const hash = crypto
       .createHmac("sha512", process.env.DOCUSIGN_WEBHOOK_SECRET)
       .update(JSON.stringify(req.body))
-      .digest("hex")
+      .digest("hex");
 
     if (hash !== req.headers["x-docusign-signature"]) {
-      throw new Error("Invalid Docusign signature")
+      throw new Error("Invalid Docusign signature");
     }
 
     // Process the webhook asynchronously
     const [error, data] = await manageAsyncOps(
       DocusignService.docusignWebhookService(req)
-    )
+    );
 
     if (error) {
-      console.error("Error processing DocuSign webhook:", error)
-      throw error // Rethrow the error for proper handling
+      console.error("Error processing DocuSign webhook:", error);
+      throw error; // Rethrow the error for proper handling
     }
 
     // Set the Content-Type header to application/json
-    res.setHeader("Content-Type", "application/json")
+    res.setHeader("Content-Type", "application/json");
 
-    // Send a success response
-    res.sendStatus(200)
+    // Send a JSON success response
+    res.json({ success: true });
   } catch (err) {
-    console.error("Error in Docusign Webhook Controller:", err)
-    res.status(500).send("Internal Server Error")
+    console.error("Error in Docusign Webhook Controller:", err);
+    res.status(500).json({ error: "Internal Server Error" });
   }
-}
+};
 
 module.exports = {
   postDocusignController,
