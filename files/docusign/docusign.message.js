@@ -9,4 +9,7 @@ module.exports.docusignMessages = {
   DUPLICATE: "duplicate contract",
   UPDATE_SUCCESS: "update successful",
   SUCCESS: "successful",
+  NO_DATA: "no data receive from docusign",
+  ERROR_FILE: "error writing file",
+  DOWNLOAD_BASE64: "Document successfully saved as Base64 in a file",
 }

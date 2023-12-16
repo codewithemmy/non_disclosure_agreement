@@ -34,7 +34,6 @@ userRoute
 
 userRoute.route("/").get(getUserController)
 
-
 userRoute.route("/download-nda/:uuid").get(downloadNdaController)
 
 userRoute.use(isAuthenticated)

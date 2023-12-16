@@ -1,11 +1,14 @@
 const {
   postDocusignController,
   getDocusignController,
+  docusignWebhookController,
 } = require("./docusign.controller")
 
 const docusignRouter = require("express").Router()
 
-const { isAuthenticated, adminVerifier } = require("../../utils")
+docusignRouter.route("/docusign/webhook").get(docusignWebhookController)
+
+const { isAuthenticated } = require("../../utils")
 
 //authenticated routes go below here
 docusignRouter.use(isAuthenticated)

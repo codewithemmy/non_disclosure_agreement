@@ -125,8 +125,6 @@ class AdminAuthService {
       status = "Active"
     }
 
-    console.log("status", status)
-
     const admin = await AdminRepository.updateAdminById(params.id, {
       image: image?.secure_url,
       status,

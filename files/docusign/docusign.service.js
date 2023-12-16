@@ -4,7 +4,6 @@ const fs = require("fs")
 const writeFile = util.promisify(fs.writeFile)
 const { ContractRepository } = require("../contract/contract.repository")
 const path = require("path")
-const { queryConstructor, AlphaNumeric } = require("../../utils")
 const {
   checkToken,
   getEnvelopeApi,
@@ -30,7 +29,7 @@ class DocusignService {
 
     await checkToken(req)
     let envelopesApi = getEnvelopeApi(req)
-    let envelope = makeEmailEnvelope(req.body.email, filePath)
+    let envelope = makeEmailEnvelope(req.body, filePath)
     let results = await envelopesApi.createEnvelope(
       process.env.API_ACCOUNT_ID,
       {
@@ -51,33 +50,75 @@ class DocusignService {
     // Assuming envelopesApi.getEnvelope returns binary data
     await checkToken(req)
     let envelopesApi = getEnvelopeApi(req)
-    let signedDocumentData = await envelopesApi.getEnvelope(
+    let signedDocumentData = await envelopesApi.getDocument(
       process.env.API_ACCOUNT_ID,
-      req.params.envelopeId
+      req.params.envelopeId,
+      "combined"
     )
 
     if (!signedDocumentData) {
       console.error("No data received from Docusign")
-      return { success: false, msg: "No data received from Docusign" }
+      return { success: false, msg: docusignMessages.NO_DATA }
     }
 
-    const { documentsUri } = signedDocumentData
-    console.log("document", documentsUri)
-
-    // Convert binary data to Base64
-    const signedDocumentBase64 = Buffer.from(documentsUri).toString("base64")
-
     const pdfFilename = `new_document.pdf`
-    const pdfFilePath = path.join(__dirname, "../../utils/public/pdf/", pdfFilename)
+    const pdfFilePath = path.join(
+      __dirname,
+      "../../utils/public/pdf/",
+      pdfFilename
+    )
 
     try {
-      await writeFile(pdfFilePath, signedDocumentBase64, "base64")
-      console.log("File successfully written")
+      await writeFile(pdfFilePath, signedDocumentData, "binary")
     } catch (error) {
       console.error("Error writing the file:", error)
       return {
         success: false,
-        msg: "Error writing the file",
+        msg: docusignMessages.ERROR_FILE,
+      }
+    }
+
+    return {
+      success: true,
+      msg: docusignMessages.DOWNLOAD_BASE64,
+    }
+  }
+
+  static async docusignWebhookService(req) {
+    await checkToken(req)
+
+    // Extract relevant information from the DocuSign webhook payload
+    const docusignEvent = req.body
+
+    // Implement logic to update your application based on the DocuSign event
+    if (docusignEvent.eventType === "EnvelopeComplete") {
+      const envelopeId = docusignEvent.envelopeId
+      let envelopesApi = getEnvelopeApi(req)
+      let signedDocumentData = await envelopesApi.getDocument(
+        process.env.API_ACCOUNT_ID,
+        envelopeId
+      )
+
+      try {
+        const contract = await ContractRepository.fetchOne({
+          unique: envelopeId,
+        })
+
+        if (contract) {
+          const pdfFilename = `${envelopeId}_document.pdf`
+          let newFilePath = path.join(
+            __dirname,
+            "../../utils/public/pdf/",
+            pdfFilename
+          )
+
+          await writeFile(newFilePath, signedDocumentData, "binary")
+
+          contract.status = "signed"
+          await contract.save()
+        }
+      } catch (error) {
+        console.error("Error downloading signed document:", error)
       }
     }
 

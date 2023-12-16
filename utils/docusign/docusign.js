@@ -5,7 +5,9 @@ const fs = require("fs")
 const app = express()
 
 //utility function
-const makeEmailEnvelope = (email, fileName) => {
+const makeEmailEnvelope = (payload, fileName) => {
+  const { email, ccEmail } = payload
+
   let converts = fs.readFileSync(
     path.resolve(__dirname, "..", "..", "pdf", `${fileName}`)
   )
@@ -28,14 +30,24 @@ const makeEmailEnvelope = (email, fileName) => {
   let signer1 = docusign.Signer.constructFromObject({
     email: email,
     name: email,
-    recipientId: 1234,
+    recipientId: 1,
+  })
+
+  const ccRecipients = docusign.CarbonCopy.constructFromObject({
+    email: ccEmail,
+    name: ccEmail,
+    routingOrder: 2,
+    recipientId: 2,
   })
 
   let recipients = docusign.Recipients.constructFromObject({
     signers: [signer1],
+    carbonCopies: [ccRecipients],
   })
 
   env.recipients = recipients
+
+  console.log("Envelope Definition:", env) // Log the envelope definition for debugging
 
   env.status = "sent"
 
@@ -57,7 +69,6 @@ const makeEnvelope = (name, email) => {
 
   return env
 }
-
 
 const getEnvelopeApi = (req) => {
   let dsApiClient = new docusign.ApiClient()
