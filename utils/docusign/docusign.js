@@ -47,8 +47,6 @@ const makeEmailEnvelope = (payload, fileName) => {
 
   env.recipients = recipients
 
-  console.log("Envelope Definition:", env) // Log the envelope definition for debugging
-
   env.status = "sent"
 
   return env

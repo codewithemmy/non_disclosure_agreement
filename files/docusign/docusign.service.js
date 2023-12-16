@@ -90,9 +90,12 @@ class DocusignService {
     // Extract relevant information from the DocuSign webhook payload
     const docusignEvent = req.body
 
+    console.log("docusignEvent", docusignEvent)
+
     // Implement logic to update your application based on the DocuSign event
     if (docusignEvent.eventType === "EnvelopeComplete") {
       const envelopeId = docusignEvent.envelopeId
+      console.log("envelopeId", envelopeId)
       let envelopesApi = getEnvelopeApi(req)
       let signedDocumentData = await envelopesApi.getDocument(
         process.env.API_ACCOUNT_ID,
