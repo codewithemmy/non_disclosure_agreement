@@ -109,7 +109,7 @@ class DocusignService {
 
         if (contract) {
           const pdfFilename = `${envelopeId}_document.pdf`
-          let newFilePath = path.join(
+          const newFilePath = path.join(
             __dirname,
             "../../utils/public/pdf/",
             pdfFilename
@@ -120,14 +120,15 @@ class DocusignService {
           contract.status = "signed"
           await contract.save()
         }
+
+        return {
+          success: true,
+          msg: "Document successfully saved as Base64 in a file",
+        }
       } catch (error) {
         console.error("Error downloading signed document:", error)
+        throw error
       }
-    }
-
-    return {
-      success: true,
-      msg: "Document successfully saved as Base64 in a file",
     }
   }
 }
