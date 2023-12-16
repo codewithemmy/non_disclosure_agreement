@@ -68,6 +68,9 @@ const docusignWebhookController = async (req, res, next) => {
       throw error // Rethrow the error for proper handling
     }
 
+    // Set the Content-Type header to application/json
+    res.setHeader("Content-Type", "application/json")
+
     // Send a success response
     res.sendStatus(200)
   } catch (err) {
