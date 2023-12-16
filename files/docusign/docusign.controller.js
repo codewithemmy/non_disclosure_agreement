@@ -31,6 +31,7 @@ const getDocusignController = async (req, res, next) => {
 
 const docusignWebhookController = async (req, res, next) => {
   try {
+    console.log("request", req)
     // Verify payload integrity
     const hash = crypto
       .createHmac("sha512", process.env.DOCUSIGN_WEBHOOK_SECRET)
@@ -45,12 +46,6 @@ const docusignWebhookController = async (req, res, next) => {
     const [error, data] = await manageAsyncOps(
       DocusignService.docusignWebhookService(req)
     )
-
-    if (error) {
-      console.error("Error processing DocuSign webhook:", error)
-      throw error // Rethrow the error for proper handling
-    }
-
     // Send a success response
     res.sendStatus(200)
   } catch (err) {
