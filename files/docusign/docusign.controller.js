@@ -60,7 +60,7 @@ const getDocusignController = async (req, res, next) => {
 // }
 
 const docusignWebhookController = async (req, res, next) => {
-  console.log("request", req.bodys)
+  console.log("request", req.body)
   try {
     // Verify payload integrity
     const receivedSignature = req.headers["x-docusign-signature"]
