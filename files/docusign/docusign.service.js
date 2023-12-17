@@ -119,6 +119,8 @@ class DocusignService {
           envelopeId,
         })
 
+        console.log("contract", contract)
+
         const pdfFilename = `${contract.uniqueId}_document.pdf`
         const newFilePath = path.join(
           __dirname,
