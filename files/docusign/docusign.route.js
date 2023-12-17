@@ -10,7 +10,7 @@ const { contentParser } = require("../../utils/contentParser")
 
 docusignRouter
   .route(
-    "/restapi/v2.1/accounts/6a609554-d9d7-43d0-a0a6-24638588457b/connect/oauth"
+    "/restapi/v2.1/accounts/6a609554-d9d7-43d0-a0a6-24638588457b/connect"
   )
   .post(contentParser, docusignWebhookController)
 
