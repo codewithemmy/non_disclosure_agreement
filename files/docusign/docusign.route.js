@@ -12,7 +12,7 @@ docusignRouter
   .route(
     "/restapi/v2.1/accounts/6a609554-d9d7-43d0-a0a6-24638588457b/connect/oauth"
   )
-  .post(docusignWebhookController)
+  .post(contentParser, docusignWebhookController)
 
 //authenticated routes go below here
 https: docusignRouter.use(isAuthenticated)
