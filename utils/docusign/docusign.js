@@ -94,7 +94,6 @@ function makeRecipientViewRequest(name, email, clientUserId) {
 const checkToken = async (req) => {
   if (req.session.access_token && Date.now() < req.session.expires_at) {
   } else {
-    console.log("generating a new access token")
     let dsApiClient = new docusign.ApiClient()
     dsApiClient.setBasePath(process.env.BASE_PATH)
     const results = await dsApiClient.requestJWTUserToken(

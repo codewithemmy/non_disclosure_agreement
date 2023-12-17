@@ -39,8 +39,6 @@ class DocusignService {
 
     if (!results) return { success: false, msg: docusignMessages.CREATE_ERROR }
 
-    console.log("result", results)
-
     const contract = await ContractRepository.updateContractByParams(
       {
         uniqueId: req.params.uuid,
@@ -116,8 +114,6 @@ class DocusignService {
         const contract = await ContractRepository.fetchOne({
           envelopeId,
         })
-
-        console.log("contract", contract)
 
         const pdfFilename = `${contract.uniqueId}_document.pdf`
         const newFilePath = path.join(
