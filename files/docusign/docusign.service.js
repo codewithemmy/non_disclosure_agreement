@@ -93,8 +93,8 @@ class DocusignService {
     console.log("docusignEvent", docusignEvent)
 
     // Implement logic to update your application based on the DocuSign event
-    if (docusignEvent.eventType === "EnvelopeComplete") {
-      const envelopeId = docusignEvent.envelopeId
+    if (docusignEvent.event === "envelope-completed") {
+      const envelopeId = docusignEvent?.data?.envelopeId
       console.log("envelopeId", envelopeId)
       let envelopesApi = getEnvelopeApi(req)
       let signedDocumentData = await envelopesApi.getDocument(
