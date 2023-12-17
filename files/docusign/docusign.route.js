@@ -9,10 +9,8 @@ const { isAuthenticated } = require("../../utils")
 const { contentParser } = require("../../utils/contentParser")
 
 docusignRouter
-  .route(
-    "/restapi/v2.1/accounts/6a609554-d9d7-43d0-a0a6-24638588457b/connect"
-  )
-  .post(contentParser, docusignWebhookController)
+  .route("/restapi/v2.1/accounts/6a609554-d9d7-43d0-a0a6-24638588457b/connect")
+  .post(docusignWebhookController)
 
 //authenticated routes go below here
 https: docusignRouter.use(isAuthenticated)
