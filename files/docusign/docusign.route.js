@@ -8,7 +8,7 @@ const docusignRouter = require("express").Router()
 const { isAuthenticated } = require("../../utils")
 const { contentParser } = require("../../utils/contentParser")
 
-docusignRouter.route("/webhook").post(contentParser, docusignWebhookController)
+docusignRouter.route("/webhook").post(docusignWebhookController)
 
 //authenticated routes go below here
 docusignRouter.use(isAuthenticated)
