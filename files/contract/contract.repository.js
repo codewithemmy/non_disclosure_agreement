@@ -40,6 +40,14 @@ class ContractRepository {
       { new: true, runValidator: true }
     )
   }
+
+  static async updateContractByParams(payload, body) {
+    return Contract.findOneAndUpdate(
+      { ...payload },
+      { ...body },
+      { new: true, runValidator: true }
+    )
+  }
 }
 
 module.exports = { ContractRepository }

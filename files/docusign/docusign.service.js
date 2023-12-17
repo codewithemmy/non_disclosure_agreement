@@ -39,6 +39,17 @@ class DocusignService {
 
     if (!results) return { success: false, msg: docusignMessages.CREATE_ERROR }
 
+    console.log("result", results)
+
+    const contract = await ContractRepository.updateContractByParams(
+      {
+        uniqueId: req.params.uuid,
+      },
+      { envelopeId: results.envelopeId }
+    )
+
+    if (!contract) return { success: false, msg: `contract not found` }
+
     return {
       success: true,
       msg: docusignMessages.SUCCESS,
@@ -99,27 +110,26 @@ class DocusignService {
       let envelopesApi = getEnvelopeApi(req)
       let signedDocumentData = await envelopesApi.getDocument(
         process.env.API_ACCOUNT_ID,
-        envelopeId
+        envelopeId,
+        "combined"
       )
 
       try {
         const contract = await ContractRepository.fetchOne({
-          unique: envelopeId,
+          envelopeId,
         })
 
-        if (contract) {
-          const pdfFilename = `${envelopeId}_document.pdf`
-          const newFilePath = path.join(
-            __dirname,
-            "../../utils/public/pdf/",
-            pdfFilename
-          )
+        const pdfFilename = `${contract.uniqueId}_document.pdf`
+        const newFilePath = path.join(
+          __dirname,
+          "../../utils/public/pdf/",
+          pdfFilename
+        )
 
-          await writeFile(newFilePath, signedDocumentData, "binary")
+        await writeFile(newFilePath, signedDocumentData, "binary")
 
-          contract.status = "signed"
-          await contract.save()
-        }
+        contract.status = "signed"
+        await contract.save()
 
         return {
           success: true,

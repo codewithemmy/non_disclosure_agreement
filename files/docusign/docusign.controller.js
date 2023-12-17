@@ -45,7 +45,6 @@ const getDocusignController = async (req, res, next) => {
 
 const docusignWebhookController = async (req, res, next) => {
   try {
-    // Process the webhook asynchronously
     const [error, data] = await manageAsyncOps(
       DocusignService.docusignWebhookService(req)
     )

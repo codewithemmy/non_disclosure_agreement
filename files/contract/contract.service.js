@@ -85,7 +85,7 @@ class ContractService {
     if (!contract._id)
       return { success: false, msg: ContractMessages.ORDER_ERROR }
 
-    await ContractRepository.updateOrder(id, payload)
+    await ContractRepository.updateContract(id, payload)
 
     return {
       success: true,

@@ -8,6 +8,9 @@ const contractSchema = new mongoose.Schema(
     contractName: {
       type: String,
     },
+    envelopeId: {
+      type: String,
+    },
     totalPrice: {
       type: String,
     },
