@@ -95,7 +95,7 @@ const saveNdaController = async (req, res, next) => {
   const [error, data] = await manageAsyncOps(
     ndaService.saveNdaService(req, res.locals.jwt._id)
   )
- 
+
   if (error) return next(error)
 
   if (!data.success) return next(new CustomError(data.msg, BAD_REQUEST, data))
@@ -106,7 +106,11 @@ const saveNdaController = async (req, res, next) => {
 const downloadNdaController = async (req, res, next) => {
   try {
     const fileName = `${req.params.uuid}_document.pdf`
-    const filePath = path.join(__dirname, "../../../utils/public/pdf/", fileName)
+    const filePath = path.join(
+      __dirname,
+      "../../../utils/public/pdf/",
+      fileName
+    )
 
     // Set the appropriate content type for a PDF file
     res.setHeader("Content-Type", "application/pdf")

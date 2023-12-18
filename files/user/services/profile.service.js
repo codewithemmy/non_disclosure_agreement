@@ -21,7 +21,7 @@ class ProfileService {
 
     const image = await uploadImageManager(payload)
 
-    delete body.email
+    delete payload.body.email
     const userprofile = await UserRepository.updateUserById(id, {
       photo: image.secure_url,
       ...payload.body,
